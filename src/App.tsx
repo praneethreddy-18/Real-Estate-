@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
+import { Hero } from './components/Hero';
 import { FilterBar } from './components/FilterBar';
 import { PropertyCard } from './components/PropertyCard';
-import { properties } from './data/properties';
+import { PropertyDetailModal } from './components/PropertyDetailModal';
+import { Footer } from './components/Footer';
+import { properties, type Property } from './data/properties';
 import { Building2 } from 'lucide-react';
 
 function App() {
@@ -11,6 +14,9 @@ function App() {
     const saved = localStorage.getItem('real_estate_saved');
     return saved ? JSON.parse(saved) : [];
   });
+
+  // Selected Property for Details Modal
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
 
   // View Mode: 'all' listings or 'saved' favorites
   const [viewMode, setViewMode] = useState<'all' | 'saved'>('all');
@@ -77,16 +83,22 @@ function App() {
         onViewModeChange={setViewMode}
       />
 
-      <main className="container main-content">
-        {/* Page Title */}
+      {/* Hero Section */}
+      <Hero />
+
+      {/* Ambient background decorative light mesh */}
+      <div className="ambient-mesh-glow"></div>
+
+      <main id="listings" className="container main-content">
+        {/* Section Header */}
         <div className="page-header">
-          <h1>
-            {viewMode === 'saved' ? 'Saved Favorite Properties' : 'Explore Property Listings'}
-          </h1>
+          <h2>
+            {viewMode === 'saved' ? 'Saved Favorite Properties' : 'Hyderabad Prime Properties'}
+          </h2>
           <p>
             {viewMode === 'saved'
-              ? `Showing your ${savedIds.length} saved properties`
-              : 'Browse luxury villas, penthouses, and modern apartments'}
+              ? `Showing your ${savedIds.length} saved Hyderabad properties`
+              : 'Browse luxury villas, penthouses, and apartments across Jubilee Hills, Gachibowli & Kokapet'}
           </p>
         </div>
 
@@ -112,6 +124,7 @@ function App() {
                 property={property}
                 isSaved={savedIds.includes(property.id)}
                 onToggleFavorite={handleToggleFavorite}
+                onSelectProperty={setSelectedProperty}
               />
             ))}
           </div>
@@ -137,6 +150,15 @@ function App() {
           </div>
         )}
       </main>
+
+      {/* Property Details Modal Overlay */}
+      <PropertyDetailModal
+        property={selectedProperty}
+        onClose={() => setSelectedProperty(null)}
+      />
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

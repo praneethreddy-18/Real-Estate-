@@ -37,7 +37,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             className={`nav-btn saved-btn ${viewMode === 'saved' ? 'active' : ''}`}
           >
             <Heart size={18} className="heart-icon-badge" />
-            <span>Saved Favorites</span>
+            <span> Favorites</span>
             <span className="saved-badge">{savedCount}</span>
           </button>
         </div>
